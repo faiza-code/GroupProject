@@ -35,7 +35,6 @@ namespace GroupProject
             Enrollment e4 = system.EnrollStudent(student4, course);
             Enrollment e5 = system.EnrollStudent(student5, course);
 
-            
             if (e1 != null) system.RecordPayment(e1, 200, PaymentMethod.Cash);
             if (e2 != null) system.RecordPayment(e2, 500, PaymentMethod.Card);
             if (e3 != null) system.RecordPayment(e3, 400, PaymentMethod.BankTransfer);
@@ -43,8 +42,11 @@ namespace GroupProject
             if (e5 != null) system.RecordPayment(e5, 500, PaymentMethod.Card);
 
             
+            Console.WriteLine("---------------------------------------------");
             system.DisplayStudentsInCourse(course);
+            Console.WriteLine("---------------------------------------------");
             system.DisplayRevenueForCourse(course);
+            Console.WriteLine("---------------------------------------------");
             system.DisplayTopStudents();
 
 

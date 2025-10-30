@@ -90,11 +90,11 @@ namespace GroupProject.Services
         public Enrollment EnrollStudent(Student student, Course course)
         {
             
-            foreach (var enrollment in student.Enrollments)
+            foreach (var enrollment1 in student.Enrollments)
             {
-                if (enrollment.Status == EnrollmentStatus.Active &&
-                    course.StartDate < enrollment.Course.EndDate &&
-                    course.EndDate > enrollment.Course.StartDate)
+                if (enrollment1.Status == EnrollmentStatus.Active &&
+                    course.StartDate < enrollment1.Course.EndDate &&
+                    course.EndDate > enrollment1.Course.StartDate)
                 {
                     Console.WriteLine("Error: Student is already enrolled in a course that overlaps in time.");
                     return null;
