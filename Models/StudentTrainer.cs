@@ -10,7 +10,7 @@ namespace GroupProject.Models
     public class StudentTrainer
     {
 
-        // this id a forinKey of class Student....
+        // Is Primary key From Class Student and ForeignKey in Class StudentTrainer....
         [ForeignKey(nameof(student))]
         public Student student { get; set; }
         public int StudentID { get; set; }
@@ -18,10 +18,10 @@ namespace GroupProject.Models
 
 
 
-        // this id a forinKey of class Trainer....
-        [ForeignKey(nameof(traininer))]
-        public Triainer traininer { get; set; }
+        // Is Primary key From Class Trainer and ForeignKey in Class StudentTrainer....
+        [ForeignKey(nameof(trainer))]
+        public Trainer trainer { get; set; }
         public int TrainerID { get; set; }
-        public ICollection<Triainer> triainers { get; set; } = new HashSet<Triainer>();
+        public ICollection<Trainer> triainers { get; set; } = new HashSet<Trainer>();
     }
 }

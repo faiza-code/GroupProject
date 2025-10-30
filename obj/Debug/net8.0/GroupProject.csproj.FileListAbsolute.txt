@@ -1,0 +1,15 @@
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.AssemblyInfoInputs.cache
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.AssemblyInfo.cs
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.sourcelink.json
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\bin\Debug\net8.0\GroupProject.exe
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\bin\Debug\net8.0\GroupProject.deps.json
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\bin\Debug\net8.0\GroupProject.runtimeconfig.json
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\bin\Debug\net8.0\GroupProject.dll
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\bin\Debug\net8.0\GroupProject.pdb
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.dll
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\refint\GroupProject.dll
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.pdb
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\GroupProject.genruntimeconfig.cache
+C:\Users\USER PC\OneDrive\Documents\Makeen Project\MakeenSalalahSolution\GroupProject\obj\Debug\net8.0\ref\GroupProject.dll

@@ -12,10 +12,10 @@ namespace GroupProject.Models
         public int PhoneNumber { get; set; }
 
 
-        // this id a forinKey of class Trainer....
+        // Is Primary key From Class Trainer and ForeignKey in Class TrainerPhoneNumber....
         [ForeignKey(nameof(traininer))]
-        public Triainer traininer { get; set; }
+        public Trainer traininer { get; set; }
         public int TrainerID { get; set; }
-        public ICollection<Triainer> triainers { get; set; } = new HashSet<Triainer>();
+        public ICollection<Trainer> triainers { get; set; } = new HashSet<Trainer>();
     }
 }

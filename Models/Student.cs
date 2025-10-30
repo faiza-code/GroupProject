@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProject.Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,57 +11,19 @@ namespace GroupProject.Models
     public  class Student
     {
         [Key]
-        public int StudentID{ get; set; }
+        public int StudentID { get; set; }
         public string FullName { get; set; }
+        public string CivilID { get; set; }
+        public string Phone { get; set; }
+
         [EmailAddress]
         public string Email { get; set; }
-        public string CivilID { get; set; }
-        public DateTime RegistrationData { get; set; }
-        public Student student { get; set; }
+        public string City { get; set; }
+        public DateTime RegistrationDate { get; set; }
 
+        public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
-
-        
-        public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
-        public int CoursesCount => enrollments.Count(e => e.Status == "Completed");
-
-        public bool EnrollInCourse(Course course)
-        {
-            foreach (var enrollment in enrollments)
-            {
-                if (enrollment.Status == "Active" &&
-                    enrollment.courses.StartDate < course.EndDate &&
-                    course.StartDate < enrollment.course.EndDate)
-                {
-                    Console.WriteLine($"{FullName} Full rejester in {course.Titel} ");
-                    return false;
-                }
-            }
-
-
-            var newEnrollment = new Enrollment
-            {
-                StudentID = this,
-                CourseID = course,
-                EnrollmentDate = DateTime.Now,
-                Status = "Active"
-            };
-
-
-            Enrollment.Add(newEnrollment);
-            course.Enrollments.Add(newEnrollment);
-            Console.WriteLine($"{FullName} you rigester in   {course.Titel}");
-            return true;
-        }
+       // Funtionn 
+        public int CompletedCoursesCount => Enrollments.Count(e => e.Status == EnrollmentStatus.Completed);
     }
-
-
-
-
-
-
-
-
-
 }
-

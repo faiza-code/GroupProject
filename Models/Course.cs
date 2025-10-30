@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProject.Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,29 +10,27 @@ using System.Threading.Tasks;
 namespace GroupProject.Models
 {
     public class Course
-    {
-        [Key]
+    {   
         public int CourseID { get; set; }
-        public string Titel { get; set; }
+        public string Title { get; set; }
         public string Category { get; set; }
-        public string Duration { get; set; }
+        public int Duration { get; set; } 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Fee { get; set; }
-        public Course course { get; set; }
+        public decimal Fee { get; set; }
 
 
-        [ForeignKey(nameof(triainer))]
-        public Triainer triainer { get; set; }
+        // Is Primary key From Class Trainar and ForeignKey in Class Course....
+        [ForeignKey(nameof(Trainer))]
+        public Trainer Trainer { get; set; }
         public int TrainerID { get; set; }
-        public ICollection<Triainer>triainers { get; set; } = new HashSet<Triainer>();
+        public ICollection<Trainer> triainers { get; set; } = new HashSet<Trainer>();
 
 
 
         //Function
-        public ICollection<Enrollment> enrollment { get; set; } = new HashSet<Enrollment>();
-        public ICollection<Payment> payments { get; set; } = new HashSet<Payment>();
         public object FullName { get; private set; }
+        public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
         public bool IsActive()
         {
@@ -39,33 +38,7 @@ namespace GroupProject.Models
             return now >= StartDate && now <= EndDate;
         }
 
-        public decimal TotalRevenue()
-        {
-            decimal total = 0;
-            foreach (var enrollments in enrollment)
-            {
-                foreach (var payment in enrollments.payments)
-                {
-                    total += payment.AmountPaid;
-                }
-            }
-            return total;
         }
-
-        public decimal ApplyDiscount(decimal courseFee)
-        {
-            int completedCourses = Enrollment.count(e => e.Status == "Completed");
-            if (completedCourses >= 3)
-            {
-                decimal discountedFee = courseFee * .10m; 
-                Console.WriteLine($" {FullName}.New Fee: {discountedFee}");
-                return discountedFee;
-            }
-            return courseFee;
-        }
-
-
-    }
 
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProject.Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,21 +15,14 @@ namespace GroupProject.Models
         public int PaymentID { get; set; }
         public decimal AmountPaid { get; set; }
         public DateTime PaymentDate { get; set; }
-        public string PaymentMethod { get; set; }
-        public decimal RemainingBalance { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
-        public Payment payment { get; set; }
-
-        // this id a forinKey of class Enrollment....
-        [ForeignKey(nameof(enrollment))]
-        public Enrollment enrollment { get; set; }
+        // Is Primary key From Class Trainar and ForeignKey in Class Enrollment....
+        [ForeignKey(nameof(Enrollment))]
+        public Enrollment Enrollment { get; set; }
         public int EnrollmentId { get; set; }
         public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
 
 
-
-
-
-    
-}
+    }
 }

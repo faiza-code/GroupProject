@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GroupProject.Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,42 +11,36 @@ namespace GroupProject.Models
 {
     public class Enrollment
     {
-        [Key]
-        public int EnrollmentId { get; set; }
-        public DateTime EnrollmentDate { get; set; }
-        public double Grade { get; set; }
-        public string Status { get; set; }
+  
 
-        public Enrollment enrollment { get; set; }
-
-        // this id a forinKey of class Student....
-        [ForeignKey(nameof(student))]
-        public Student student { get; set; }
-        public int StudentID { get; set; }
-        public ICollection<Student> students { get; set; } = new HashSet<Student>();
+    [Key]
+    public int EnrollmentID { get; set; }
+    public Student Student { get; set; }
+    public Course Course { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public EnrollmentStatus Status { get; set; }
+    public string Grade { get; set; }
 
 
-        // this id a forinKey of class Course....
-        [ForeignKey(nameof(course))]
-        public Course course { get; set; }
-        public int CourseID { get; set; }
-        public ICollection<Course> courses { get; set; } = new HashSet<Course>();
+     // Is Primary key From Class Trainar and ForeignKey in Class Enrollment....
+    [ForeignKey(nameof(student))]
+    public Student student { get; set; }
+    public int StudentID { get; set; }
+    public ICollection<Student> students { get; set; } = new HashSet<Student>();
 
 
-        //function :
-        public ICollection<Payment> payments { get; set; } = new HashSet<Payment>();
-        public decimal TotalPaid => payments.Sum(p => p.AmountPaid);
+     // Is Primary key From Class Course and ForeignKey in Class Enrollment....
+    [ForeignKey(nameof(course))]
+    public Course course { get; set; }
+    public int CourseID { get; set; }
+    public ICollection<Course> courses { get; set; } = new HashSet<Course>();
 
-        internal static int count(Func<object, bool> value)
-        {
-            throw new NotImplementedException();
-        }
 
-        public decimal RemainingBalance (decimal amount)
-        {
-            amount = courses.Fee - TotalPaid;
-            return amount;
-        }
+     //Function
+    public List<Payment> Payments { get; set; } = new List<Payment>();
+
+    public decimal TotalPaid => Payments.Sum(p => p.AmountPaid);
+    public decimal RemainingBalance => Course.Fee - TotalPaid;
 
     }
 }

@@ -11,7 +11,7 @@ namespace GroupProject.Models
     {
         public int StudentPhone { get; set; }
 
-        // this id a forinKey of class Student....
+        // Is Primary key From Class Student and ForeignKey in Class StudentPhoneNumber....
         [ForeignKey(nameof(student))]
         public Student student { get; set; }
         public int StudentID { get; set; }

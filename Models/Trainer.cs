@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Models
 {
-    public  class Triainer
+    public class Trainer
     {
         [Key]
-        public int TrinaerID { get; set; }
+        public int TrainerID { get; set; }
         public string Name { get; set; }
         public string Specialty { get; set; }
-        public int YearOfExperience { get; set; }
-        [EmailAddress]
+        public int YearsOfExperience { get; set; }
+        public string Phone { get; set; }
         public string Email { get; set; }
-        public Triainer triainer{ get; set; }
-
         public List<Course> Courses { get; set; } = new List<Course>();
-        public int ActiveCourses => Courses.Count(c => c.IsActive());
+
+        public int ActiveCoursesCount => Courses.Count(c => c.IsActive());
+
+
 
     }
 }

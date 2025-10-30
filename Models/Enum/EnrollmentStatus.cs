@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Models.Enum
 {
-    public enum Status
+    public enum EnrollmentStatus
     {
         Active, 
         Completed, 
