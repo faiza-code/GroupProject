@@ -10,11 +10,12 @@ namespace GroupProject.Services
 {
     public class ServicesSystem
     {
-        private List<Student> students = new List<Student>();
-        private List<Trainer> trainers = new List<Trainer>();
-        private List<Course> courses = new List<Course>();
-        private List<Enrollment> enrollments = new List<Enrollment>();
-        private List<Payment> payments = new List<Payment>();
+        
+        public List<Student> Students = new List<Student>();
+        public List<Trainer> Trainers = new List<Trainer>();
+        public List<Course> Courses = new List<Course>();
+        public List<Enrollment> Enrollments = new List<Enrollment>();
+        public List<Payment> Payments = new List<Payment>();
 
         private int nextStudentId = 1;
         private int nextTrainerId = 1;
@@ -22,86 +23,90 @@ namespace GroupProject.Services
         private int nextEnrollmentId = 1;
         private int nextPaymentId = 1;
 
-        public Student RegisterStudent(string fullName, string civilId, string phone,
-                                       string email, string city)
+       
+        public Student RegisterStudent(string name, string civilId, string phone, string email, string city)
         {
             Student student = new Student
             {
                 StudentID = nextStudentId++,
-                FullName = fullName,
+                FullName = name,
                 CivilID = civilId,
                 Phone = phone,
                 Email = email,
                 City = city,
-                RegistrationDate = DateTime.Now
+                RegistrationDate = DateTime.Now,
+                Enrollments = new List<Enrollment>()
             };
-            students.Add(student);
+            Students.Add(student);
             return student;
         }
 
-        public Trainer AddTrainer(string name, string specialty, int yearsOfExperience,
-                                  string phone, string email)
+       
+        public Trainer AddTrainer(string name, string specialty, int experience, string phone, string email)
         {
             Trainer trainer = new Trainer
             {
                 TrainerID = nextTrainerId++,
                 Name = name,
                 Specialty = specialty,
-                YearsOfExperience = yearsOfExperience,
+                YearsOfExperience = experience,
                 Phone = phone,
-                Email = email
+                Email = email,
+                Courses = new List<Course>()
             };
-            trainers.Add(trainer);
+            Trainers.Add(trainer);
             return trainer;
         }
 
-        public Course AddCourse(string title, string category, int duration,
-                                DateTime startDate, DateTime endDate,
-                                decimal fee, Trainer trainer)
+       
+        public Course AddCourse(string title, string category, int durationHours, DateTime start, DateTime end, decimal fee, Trainer trainer)
         {
-            if (trainer.ActiveCoursesCount >= 3)
-                throw new InvalidOperationException("Trainer cannot handle more than 3 active courses.");
+            
+            int activeCourses = trainer.Courses.Count(c => DateTime.Now >= c.StartDate && DateTime.Now <= c.EndDate);
+            if (activeCourses >= 3)
+            {
+                Console.WriteLine("This trainer already has 3 active courses. Cannot add more.");
+                return null;
+            }
 
             Course course = new Course
             {
                 CourseID = nextCourseId++,
                 Title = title,
                 Category = category,
-                Duration = duration,
-                StartDate = startDate,
-                EndDate = endDate,
+                Duration = durationHours,
+                StartDate = start,
+                EndDate = end,
                 Fee = fee,
-                Trainer = trainer
+                Trainer = trainer,
+                Enrollments = new List<Enrollment>()
             };
-            courses.Add(course);
+            Courses.Add(course);
             trainer.Courses.Add(course);
             return course;
         }
 
-       
-        private bool IsOverlapping(Course c1, Course c2)
-        {
-            return c1.StartDate < c2.EndDate && c2.StartDate < c1.EndDate;
-        }
-
-        public Enrollment EnrollStudentInCourse(Student student, Course course)
+        
+        public Enrollment EnrollStudent(Student student, Course course)
         {
             
-            var activeEnrollments = student.Enrollments
-                .Where(e => e.Status == EnrollmentStatus.Active)
-                .Select(e => e.Course);
-
-            foreach (var c in activeEnrollments)
+            foreach (var enrollment in student.Enrollments)
             {
-                if (IsOverlapping(c, course))
-                    throw new InvalidOperationException("Student cannot enroll in overlapping courses.");
+                if (enrollment.Status == EnrollmentStatus.Active &&
+                    course.StartDate < enrollment.Course.EndDate &&
+                    course.EndDate > enrollment.Course.StartDate)
+                {
+                    Console.WriteLine("Error: Student is already enrolled in a course that overlaps in time.");
+                    return null;
+                }
             }
 
-         
-            decimal feeToPay = course.Fee;
-            if (student.CompletedCoursesCount >= 3)
+            
+            decimal fee = course.Fee;
+            int completedCourses = student.Enrollments.Count(e => e.Status == EnrollmentStatus.Completed);
+            if (completedCourses >= 3)
             {
-                feeToPay = feeToPay * 0.9m; 
+                fee = fee * 90 / 100;
             }
 
             Enrollment enrollment = new Enrollment
@@ -110,64 +115,74 @@ namespace GroupProject.Services
                 Student = student,
                 Course = course,
                 EnrollmentDate = DateTime.Now,
-                Status = EnrollmentStatus.Active
+                Status = EnrollmentStatus.Active,
+                Payments = new List<Payment>()
             };
-            enrollments.Add(enrollment);
+            Enrollments.Add(enrollment);
             student.Enrollments.Add(enrollment);
             course.Enrollments.Add(enrollment);
-
+            Console.WriteLine($"Student {student.FullName} enrolled in {course.Title} with fee {fee}.");
             return enrollment;
         }
 
-        public Payment RecordPayment(Enrollment enrollment, decimal amountPaid, PaymentMethod method)
+       
+        public Payment RecordPayment(Enrollment enrollment, decimal amount, PaymentMethod method)
         {
-            if (!enrollments.Contains(enrollment))
-                throw new InvalidOperationException("Enrollment does not exist.");
+            if (amount <= 0)
+            {
+                Console.WriteLine("Payment amount must be positive.");
+                return null;
+            }
 
-            if (amountPaid <= 0)
-                throw new ArgumentException("Amount paid must be positive.");
+            decimal totalPaid = enrollment.Payments.Sum(p => p.AmountPaid);
+            decimal remaining = enrollment.Course.Fee - totalPaid;
+            if (amount > remaining)
+            {
+                Console.WriteLine("Payment exceeds remaining balance.");
+                return null;
+            }
 
-            var remaining = enrollment.Course.Fee - enrollment.TotalPaid;
-            if (amountPaid > remaining)
-                throw new InvalidOperationException("Amount paid exceeds remaining balance.");
-
-            var payment = new Payment
+            Payment payment = new Payment
             {
                 PaymentID = nextPaymentId++,
                 Enrollment = enrollment,
-                AmountPaid = amountPaid,
+                AmountPaid = amount,
                 PaymentDate = DateTime.Now,
                 PaymentMethod = method
             };
-            payments.Add(payment);
+            Payments.Add(payment);
             enrollment.Payments.Add(payment);
-
+            Console.WriteLine($"Payment of {amount} recorded for {enrollment.Student.FullName}.");
             return payment;
         }
 
-      
-        public List<Student> GetStudentsInCourse(int courseId)
+    
+        public void DisplayStudentsInCourse(Course course)
         {
-            return enrollments
-                .Where(e => e.Course.CourseID == courseId && e.Status == EnrollmentStatus.Active)
-                .Select(e => e.Student)
-                .ToList();
+            Console.WriteLine($"Students enrolled in {course.Title}:");
+            foreach (var enrollment in course.Enrollments.Where(e => e.Status == EnrollmentStatus.Active))
+            {
+                Console.WriteLine($"- {enrollment.Student.FullName}");
+            }
         }
 
-        public decimal GetRevenueForCourse(int courseId)
+        
+        public void DisplayRevenueForCourse(Course course)
         {
-            return enrollments
-                .Where(e => e.Course.CourseID == courseId)
-                .Sum(e => e.TotalPaid);
+            decimal revenue = course.Enrollments.Sum(e => e.Payments.Sum(p => p.AmountPaid));
+            Console.WriteLine($"Total revenue for {course.Title}: {revenue}");
         }
 
-        public List<Student> GetTopStudents(int topCount = 3)
+        
+        public void DisplayTopStudents()
         {
-            return students
-                .OrderByDescending(s => s.CompletedCoursesCount)
-                .Take(topCount)
-                .ToList();
+            var topStudents = Students.OrderByDescending(s => s.CompletedCoursesCount).Take(3);
+            Console.WriteLine("Top 3 students with most completed courses:");
+            foreach (var student in topStudents)
+            {
+                Console.WriteLine($"{student.FullName} - Completed Courses: {student.CompletedCoursesCount}");
+            }
+
         }
     }
-
 }
