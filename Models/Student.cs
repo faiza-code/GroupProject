@@ -23,18 +23,29 @@ namespace GroupProject.Models
         
         public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
         public int CoursesCount => enrollments.Count(e => e.Status == "Completed");
+
         public bool EnrollInCourse(Course course)
         {
-            foreach (var enrollment in Enrollment)
+            foreach (var enrollment in enrollments)
             {
                 if (enrollment.Status == "Active" &&
-                    enrollment.Course.StartDate < course.EndDate &&
-                    course.StartDate < enrollment.Course.EndDate)
+                    enrollment.courses.StartDate < course.EndDate &&
+                    course.StartDate < enrollment.course.EndDate)
                 {
                     Console.WriteLine($"{FullName} Full rejester in {course.Titel} ");
                     return false;
                 }
             }
+
+
+            var newEnrollment = new Enrollment
+            {
+                StudentID = this,
+                CourseID = course,
+                EnrollmentDate = DateTime.Now,
+                Status = "Active"
+            };
+
 
             Enrollment.Add(newEnrollment);
             course.Enrollments.Add(newEnrollment);
