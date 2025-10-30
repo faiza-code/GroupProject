@@ -24,8 +24,47 @@ namespace GroupProject.Models
         [ForeignKey(nameof(triainer))]
         public Triainer triainer { get; set; }
         public int TrainerID { get; set; }
-
         public ICollection<Triainer>triainers { get; set; } = new HashSet<Triainer>();
 
+
+
+        //Function
+        public ICollection<Enrollment> enrollment { get; set; } = new HashSet<Enrollment>();
+        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
+
+        public bool IsActive()
+        {
+            var now = DateTime.Now;
+            return now >= StartDate && now <= EndDate;
+        }
+
+        public decimal TotalRevenue()
+        {
+            decimal total = 0;
+            foreach (var enrollment in Enrollment)
+            {
+                foreach (var payment in enrollment.payment)
+                {
+                    total += payment.AmountPaid;
+                }
+            }
+            return total;
+        }
+
+        public decimal ApplyDiscount(decimal courseFee)
+        {
+            int completedCourses = Enrollment.Count(e => e.Status == "Completed");
+            if (completedCourses >= 3)
+            {
+                decimal discountedFee = courseFee * .10m; 
+                Console.WriteLine($" {FullName}.New Fee: {discountedFee}");
+                return discountedFee;
+            }
+            return courseFee;
+        }
+
+
     }
+
 }
+

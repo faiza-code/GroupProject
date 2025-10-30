@@ -18,5 +18,8 @@ namespace GroupProject.Models
         public string Email { get; set; }
         public Triainer triainer{ get; set; }
 
+        public List<Course> Courses { get; set; } = new List<Course>();
+        public int ActiveCourses => Courses.Count(c => c.IsActive());
+
     }
 }

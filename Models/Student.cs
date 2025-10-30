@@ -18,6 +18,45 @@ namespace GroupProject.Models
         public DateTime RegistrationData { get; set; }
         public Student student { get; set; }
 
+        
+        public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
+        public int CoursesCount => enrollments.Count(e => e.Status == "Completed");
+        public bool EnrollInCourse(Course course)
+        {
+            foreach (var enrollment in Enrollment)
+            {
+                if (enrollment.Status == "Active" &&
+                    enrollment.Course.StartDate < course.EndDate &&
+                    course.StartDate < enrollment.Course.EndDate)
+                {
+                    Console.WriteLine($"{FullName} Full rejester in {course.Titel} ");
+                    return false;
+                }
+            }
 
+            
+            var newEnrollment = new Enrollment
+            {
+                StudentID= this,
+                Course = course,
+                EnrollmentDate = DateTime.Now,
+                Status = "Active"
+            };
+
+            Enrollment.Add(newEnrollment);
+            course.Enrollments.Add(newEnrollment);
+            Console.WriteLine($"{FullName} you rigester in   {course.Titel}");
+            return true;
+        }
     }
+
+
+
+
+
+
+
+
+
 }
+

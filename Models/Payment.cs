@@ -15,7 +15,7 @@ namespace GroupProject.Models
         public double AmountPaid { get; set; }
         public DateTime PaymentDate { get; set; }
         public string PaymentMethod { get; set; }
-        public double RemainingBalance { get; set; }
+        public decimal RemainingBalance { get; set; }
 
         public Payment payment { get; set; }
 
@@ -24,6 +24,11 @@ namespace GroupProject.Models
         public Enrollment enrollment { get; set; }
         public int EnrollmentId { get; set; }
         public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
+
+
+
+
+
     
 }
 }

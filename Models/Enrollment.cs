@@ -30,5 +30,18 @@ namespace GroupProject.Models
         public Course course { get; set; }
         public int CourseID { get; set; }
         public ICollection<Course> courses { get; set; } = new HashSet<Course>();
+
+
+        //function :
+        public ICollection<Payment> payments { get; set; } = new HashSet<Payment>();
+        public decimal TotalPaid => payments.Sum(p => p.AmountPaid);
+
+        public decimal RemainingBalance (decimal amount)
+        {
+            amount = courses.Fee - TotalPaid;
+            return amount;
+        }
+
     }
 }
+
