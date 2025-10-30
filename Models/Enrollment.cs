@@ -36,6 +36,11 @@ namespace GroupProject.Models
         public ICollection<Payment> payments { get; set; } = new HashSet<Payment>();
         public decimal TotalPaid => payments.Sum(p => p.AmountPaid);
 
+        internal static int count(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
+
         public decimal RemainingBalance (decimal amount)
         {
             amount = courses.Fee - TotalPaid;

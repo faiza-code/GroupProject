@@ -30,7 +30,8 @@ namespace GroupProject.Models
 
         //Function
         public ICollection<Enrollment> enrollment { get; set; } = new HashSet<Enrollment>();
-        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
+        public ICollection<Payment> payments { get; set; } = new HashSet<Payment>();
+        public object FullName { get; private set; }
 
         public bool IsActive()
         {
@@ -41,9 +42,9 @@ namespace GroupProject.Models
         public decimal TotalRevenue()
         {
             decimal total = 0;
-            foreach (var enrollment in Enrollment)
+            foreach (var enrollments in enrollment)
             {
-                foreach (var payment in enrollment.payment)
+                foreach (var payment in enrollments.payments)
                 {
                     total += payment.AmountPaid;
                 }
@@ -53,7 +54,7 @@ namespace GroupProject.Models
 
         public decimal ApplyDiscount(decimal courseFee)
         {
-            int completedCourses = Enrollment.Count(e => e.Status == "Completed");
+            int completedCourses = Enrollment.count(e => e.Status == "Completed");
             if (completedCourses >= 3)
             {
                 decimal discountedFee = courseFee * .10m; 
