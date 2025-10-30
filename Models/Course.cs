@@ -17,7 +17,7 @@ namespace GroupProject.Models
         public string Duration { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Fee { get; set; }
+        public int Fee { get; set; }
         public Course course { get; set; }
 
 

@@ -14,9 +14,11 @@ namespace GroupProject.Models
         public string FullName { get; set; }
         [EmailAddress]
         public string Email { get; set; }
-        public int CivilID { get; set; }
+        public string CivilID { get; set; }
         public DateTime RegistrationData { get; set; }
         public Student student { get; set; }
+
+
 
         
         public ICollection<Enrollment> enrollments { get; set; } = new HashSet<Enrollment>();
@@ -33,15 +35,6 @@ namespace GroupProject.Models
                     return false;
                 }
             }
-
-            
-            var newEnrollment = new Enrollment
-            {
-                StudentID= this,
-                Course = course,
-                EnrollmentDate = DateTime.Now,
-                Status = "Active"
-            };
 
             Enrollment.Add(newEnrollment);
             course.Enrollments.Add(newEnrollment);
